@@ -18,7 +18,7 @@ std::string Timestamp::toString() const{
         tm_time->tm_hour,
         tm_time->tm_min,
         tm_time->tm_sec
-    );
+    );//snprintf跟sprintf是差不多的，它限制了最多可写缓冲区的大小，比sprintf更安全
     //年/月/日 时：分：秒；
     return buf;
 }

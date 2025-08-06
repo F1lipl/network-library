@@ -10,7 +10,10 @@ private:
     std::vector<char>buffer_;
     size_t readerIndex;//指向预留空间的末尾，可读数据的起始
     size_t writerIndex;//指向已存储数据的末尾，可写数据的起始
-    char* begin(){
+    char* begin(){//起始地址
+        return &(*buffer_.begin());
+    }
+    const char*begin()const{
         return &(*buffer_.begin());
     }
     void  makeSpace(size_t len){
@@ -29,20 +32,20 @@ public:
     static const size_t kCheaPrepend=8;//初始预留的prepebabel空间大小,即在已有数据前可写数据缓冲区的大小;
     static const size_t kInitialSize=1024;
     explicit Buffer(size_t initialSize=kInitialSize):buffer_(kInitialSize+initialSize),readerIndex(kCheaPrepend),writerIndex(kCheaPrepend){};
-    size_t readableBytes()const{
+    size_t readableBytes()const{//可读区域大小
         return writerIndex-readerIndex;
     }
-    size_t writeableBytes()const{
+    size_t writeableBytes()const{//可写区大小
         return buffer_.size()-writerIndex;
     }
-    size_t prependableBytes()const{
+    size_t prependableBytes()const{//预备区大小
         return writerIndex;
     }
     //返还缓冲区可读数据的起始地址
     const char* peek(){
         return begin()+readerIndex;
     }
-    void retrieve(size_t len){
+    void retrieve(size_t len){//回收数据
         if(len<readableBytes()){
             readerIndex+=len;
         }
@@ -69,6 +72,19 @@ public:
         }
         return ;
     }
-
+    void append(const char* data,size_t len){//向buffer里写数据
+        ensureWritableBytes(len);
+        std::copy(data,data+len,beginWrite());
+        writerIndex+=len;
+        return;
+    }
+    char* beginWrite(){
+        return begin()+writerIndex;
+    }
+    const char* beginWrite() const{
+        return begin()+writerIndex;
+    }
+    ssize_t readFd(int fd,int* saveErrno);
+    ssize_t writeFd(int fd,int* saveErrno);
     ~Buffer();
 };

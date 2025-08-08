@@ -9,7 +9,7 @@ class Eventloop;
 class Channel:noncopyable
 {
 private:
-    using EventCallback=std::function<void()>;
+    using EventCallback=std::function<void()>;// 事件回调函数
     using ReadEventCallback=std::function<void(Timestamp)>;
     void update();
     void handleEventWithGuard(Timestamp recevieTime);
@@ -84,6 +84,18 @@ public:
         events_=kNoneEvent;
         update();
     }
+    // 返回fd当前的事件状态
+    bool isNoneEvent()const {return events_==kNoneEvent;}
+    bool isWriting()const {return events_&kWriteEvent;}
+    bool isreading()const {return events_&kReadEvent;}
+
+    int index(){return index_;}
+    void set_index(int idx){index_=idx;}
+    
+    // one loop per thread
+
+    Eventloop* ownerLoop(){return  loop_;}
+    void remove();
 
 };
 

@@ -75,7 +75,7 @@ void Eventloop::loop(){
 
     while(!quit_){
         activeChannels_.clear();
-        pollerReturnTime_=;
+        pollerReturnTime_=poller_->poll(kPollTime,&activeChannels_);
         for(Channel*Channel:activeChannels_){
             Channel->handleEvent(pollerReturnTime_);
             doPendingFunctors();

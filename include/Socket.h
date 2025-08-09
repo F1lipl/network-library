@@ -4,13 +4,13 @@
 
 class inetaddress;
 
-class socket:noncopyable
+class Socket:noncopyable
 {
 private:
     const int sockfd;
 public:
-    socket(int sock):sockfd(sock){};
-    ~socket();
+    Socket(int sock):sockfd(sock){};
+    ~Socket();
     int get_fd() const {
         return sockfd;
     }

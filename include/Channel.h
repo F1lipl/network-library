@@ -47,8 +47,8 @@ public:
     void setCloseCallback(EventCallback close){
         closeCallBack=std::move(close);
     }
-    void setErrnoCallback(EventCallback errno){
-        errnoCallBack=std::move(errno);
+    void setErrnoCallback(EventCallback err){
+        errnoCallBack=std::move(err);
     } 
 
     void tie(const std::shared_ptr<void>&);

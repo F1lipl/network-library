@@ -11,7 +11,7 @@
 #include "Timestamp.h"
 
 class Channel;
-class EventLoop;
+class Eventloop;
 class Socket;
 
 /**
@@ -22,14 +22,14 @@ class Socket;
 class TcpConnection : noncopyable, public std::enable_shared_from_this<TcpConnection>
 {
 public:
-    TcpConnection(EventLoop *loop,
+    TcpConnection(Eventloop *loop,
                   const std::string &nameArg,
                   int sockfd,
                   const inetaddress &localAddr,
                   const inetaddress &peerAddr);
     ~TcpConnection();
 
-    EventLoop *getLoop() const { return loop_; }
+    Eventloop *getLoop() const { return loop_; }
     const std::string &name() const { return name_; }
     const inetaddress &localAddress() const { return localAddr_; }
     const inetaddress &peerAddress() const { return peerAddr_; }
@@ -77,7 +77,7 @@ private:
     void sendInLoop(const void *data, size_t len);
     void shutdownInLoop();
     void sendFileInLoop(int fileDescriptor, off_t offset, size_t count);
-    EventLoop *loop_; // 这里是baseloop还是subloop由TcpServer中创建的线程数决定 若为多Reactor 该loop_指向subloop 若为单Reactor 该loop_指向baseloop
+    Eventloop *loop_; // 这里是baseloop还是subloop由TcpServer中创建的线程数决定 若为多Reactor 该loop_指向subloop 若为单Reactor 该loop_指向baseloop
     const std::string name_;
     std::atomic_int state_;
     bool reading_;//连接是否在监听读事件

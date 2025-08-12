@@ -59,7 +59,4 @@ public:
     //判断eventloop对象是否在自己的线程里
     bool isInLoopThread()const{return threadId_==CurrentThread::tid();}
 
-
-
-
 };
